@@ -1,20 +1,24 @@
 const express = require("express")
 const router = express.Router();
 const Pokemon = require("../models/Pokemon.model.js")
+const capitalized = require("../utils/capitalized")
 
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/pokemons", (req, res, next) => {
+router.get("/pokemon", (req, res, next) => {
 
   // .find()
   // Model
-  Pokemon.find()
+  Pokemon.find().select("name")
   .then((response) => {
-    // console.log(response)
+    console.log(response)
     // let pokemonArr = response
+    response.forEach((eachPokemon) => {
+      eachPokemon.name = capitalized(eachPokemon.name)
+    })
     res.render("pokemon/list.hbs", {
       pokemonArr: response
     })
@@ -23,8 +27,6 @@ router.get("/pokemons", (req, res, next) => {
   .catch((err) => {
     next(err)
   })
-
-
 })
 
 router.get("/pokemon/:pokeId", (req, res, next) => {
@@ -49,6 +51,20 @@ router.get("/pokemon/:pokeId", (req, res, next) => {
 
   
 
+
+})
+
+router.get("/poke-search", (req, res, next) => {
+
+  console.log("REQ.QUERY", req.query)
+  const {pokemon} = req.query
+
+  Pokemon.findOne({name: pokemon})
+  .then((response) => {
+    res.render("pokemon/search.hbs", {
+      onePokemon: response
+    })
+  })
 
 })
 

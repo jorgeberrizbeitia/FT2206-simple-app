@@ -1,0 +1,19 @@
+
+<h2>Busca tu pokemon</h2>
+
+<form>
+
+  {{!-- <label for="pokemon">Pokemon Name:</label> --}}
+  <input type="text" name="pokemon">
+  <button>Buscar</button>
+
+</form>
+
+<div>
+
+  {{#if onePokemon}}
+    <h2>{{onePokemon.name}}</h2>
+    <img src="{{onePokemon.url}}" alt="pokemon">
+  {{/if}}
+
+</div>
